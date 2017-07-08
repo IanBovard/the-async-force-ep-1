@@ -46,8 +46,10 @@ function getFilms () {
   console.log(films.results);
   for (let i = 0; i < films.results.length; i++){
     let filmLi = document.createElement('li');
-    filmLi.innerHTML = films.results[i].title;
+    let filmTitle = document.createElement('h2');
+    filmTitle.innerHTML = films.results[i].title;
     filmList.appendChild(filmLi);
+    filmLi.appendChild(filmTitle);
   }
 }
 oReq.addEventListener('load', getFilms);
