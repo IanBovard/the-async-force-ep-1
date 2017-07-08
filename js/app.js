@@ -1,8 +1,8 @@
-let person4Name = document.getElementById('person4Name');
-let person4Homeworld = document.getElementById('person4HomeWorld');
-let person14Name = document.getElementById('person14Name');
-let person14Species = document.getElementById('person14Species');
-let filmList = document.getElementById('filmList');
+const person4Name = document.getElementById('person4Name');
+const person4Homeworld = document.getElementById('person4HomeWorld');
+const person14Name = document.getElementById('person14Name');
+const person14Species = document.getElementById('person14Species');
+const filmList = document.getElementById('filmList');
 
 var oReq = new XMLHttpRequest();
 function getName4 () {
@@ -43,13 +43,32 @@ oReq.send();
 var oReq = new XMLHttpRequest();
 function getFilms () {
   films = JSON.parse(this.responseText);
-  console.log(films.results);
+
   for (let i = 0; i < films.results.length; i++){
     let filmLi = document.createElement('li');
     let filmTitle = document.createElement('h2');
+    let planetTitle = document.createElement('h3');
+    let planetUl = document.createElement('ul');
     filmTitle.innerHTML = films.results[i].title;
+    planetTitle.innerHTML = 'Planets';
     filmList.appendChild(filmLi);
     filmLi.appendChild(filmTitle);
+    filmLi.appendChild(planetTitle);
+    planetTitle.appendChild(planetUl);
+    for (let j = 0; j < films.results[i].planets.length; j++){
+
+      let planetLi = document.createElement('li');
+      planetUl.appendChild(planetLi);
+      var oReq = new XMLHttpRequest();
+
+      function getFilmPlanets () {
+        filmPlanets = JSON.parse(this.responseText);
+        planetLi.innerHTML = filmPlanets.name;
+      }
+      oReq.addEventListener('load', getFilmPlanets);
+      oReq.open('GET',films.results[i].planets[j], true);
+      oReq.send();
+    }
   }
 }
 oReq.addEventListener('load', getFilms);
